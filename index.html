@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Automático</title>
+    <style>
+
+body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #chat-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        #chat-header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #chat-messages {
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .message img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .user-message {
+            justify-content: flex-end;
+        }
+
+        .bot-message {
+            justify-content: flex-start;
+        }
+
+        #user-input {
+            display: flex;
+            padding: 10px;
+            background-color: #f2f2f2;
+        }
+
+        #user-input input[type="text"] {
+            flex-grow: 1;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        #user-input button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Estilos para botones personalizados */
+        .response-buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        .response-button {
+            margin: 0 10px;
+            padding: 8px 16px;
+            border: none;
+            background-color: #007BFF;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Estilo personalizado para el botón "Sí" */
+        #yes-button {
+            background-color: #4CAF50; /* Verde */
+        }
+
+        /* Estilo personalizado para el botón "No" */
+        #no-button {
+            background-color: #FF5733; /* Rojo */
+        }
+
+
+        .clickable-image {
+            cursor: pointer;
+        }
+        
+        /* Estilo para la imagen en tamaño completo */
+        .full-size-image {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            text-align: center;
+        }
+        
+        .full-size-image img {
+            max-width: 80%;
+            max-height: 80%;
+            margin-top: 10%;
+            cursor: pointer;
+        }
+
+
+        .image-container {
+            text-align: center;
+        }
+
+        /* Estilos CSS para la imagen */
+        .message-image {
+            max-width: 100%;
+            height: auto;
+        }
+
+        #chat-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            max-width: 100%;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #chat-messages {
+            flex-grow: 1;
+            padding: 10px;
+            max-height: 100%;
+            overflow-y: auto;
+        }
+
+        .message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .message img.message-image {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .message .message-content {
+            margin-left: 10px;
+        }
+
+        .message .message-sender {
+            font-weight: bold;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    <div id="chat-container">
+        <div id="chat-header">
+            <h2>Bienvenido al Chat Automático</h2>
+        </div>
+        <div id="chat-messages">
+            <!-- Mensaje inicial del ChatBot -->
+            <div class="message bot-message">
+                <img src="https://png.pngtree.com/background/20230612/original/pngtree-wolf-animals-images-wallpaper-for-pc-384x480-picture-image_3180467.jpg" alt="ChatBot">
+                <div>
+                    <strong>Stripe:</strong> ¡Hola!. Aqui te dejo una foto, Quiere ver mas?
+                </div>
+            </div>
+
+            <div class="image-container">
+                <img src="https://media.cdnp.elobservador.com.uy/062020/1591374778336.jpg?cw=922&ch=1500" alt="Imagen Ejemplo" class="message-image">
+            </div>
+
+
+
+        </div>
+        <div id="user-input">
+            <input type="text" id="user-message" placeholder="Escribe un mensaje...">
+            <button id="send-button">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const userMessageInput = document.getElementById('user-message');
+        const sendButton = document.getElementById('send-button');
+
+        sendButton.addEventListener('click', () => {
+            sendMessage();
+        });
+
+        function sendMessage() {
+            const userMessage = userMessageInput.value.trim();
+            
+            if (userMessage !== '') {
+                appendMessage('Tú', userMessage, true, 'https://imagenes.noticiasrcn.com/ImgNoticias/avatar_en_wa.jpg');
+                userMessageInput.value = '';
+                
+                // Validar la respuesta del usuario aquí.
+                if (userMessage.toLowerCase() === 'yes') {
+                    // Redirigir al usuario si responde "si".
+                    window.location.href = 'https://tudireccion.com';
+                    appendMessage('ChatBot', 'Redireccionando...', false, 'https://png.pngtree.com/background/20230612/original/pngtree-wolf-animals-images-wallpaper-for-pc-384x480-picture-image_3180467.jpg');
+                } else {
+                    setTimeout(() => {
+                        const response = '¿Quieres redireccionar?';
+                        appendMessageWithButtons('ChatBot', response, false, 'https://png.pngtree.com/background/20230612/original/pngtree-wolf-animals-images-wallpaper-for-pc-384x480-picture-image_3180467.jpg', ['Sí', 'No']);
+                    }, 1000);
+                }
+            }
+        }
+
+        function handleResponse(response) {
+            if (response === 'Sí') {
+                // Redirigir al usuario si responde "Sí".
+                window.location.href = 'https://tudireccion.com';
+                appendMessage('ChatBot', 'Redireccionando...', false, 'https://png.pngtree.com/background/20230612/original/pngtree-wolf-animals-images-wallpaper-for-pc-384x480-picture-image_3180467.jpg');
+            } else {
+                // Mostrar un mensaje de agradecimiento en el chat si responde "No".
+                appendMessage('ChatBot', 'Entendido, no se realizará la redirección.', false, 'https://png.pngtree.com/background/20230612/original/pngtree-wolf-animals-images-wallpaper-for-pc-384x480-picture-image_3180467.jpg');
+            }
+        }
+
+        function appendMessage(sender, message, isUser, icon) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageElement.innerHTML = `
+                <img src="${icon}" alt="${sender}">
+                <div>
+                    <strong>${sender}:</strong> ${message}
+                </div>
+            `;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function appendMessageWithButtons(sender, message, isUser, icon, buttons) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageElement.innerHTML = `
+                <img src="${icon}" alt="${sender}">
+                <div>
+                    <strong>${sender}:</strong> ${message}
+                </div>
+            `;
+            chatMessages.appendChild(messageElement);
+
+            // Agregar botones personalizados "Sí" y "No" al mensaje del chatbot.
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'response-buttons';
+            buttons.forEach(buttonText => {
+                const button = document.createElement('button');
+                button.textContent = buttonText;
+                button.className = 'response-button';
+                button.id = (buttonText === 'Sí') ? 'yes-button' : 'no-button'; // Asignar ID a los botones
+                button.addEventListener('click', () => handleResponse(buttonText));
+                buttonContainer.appendChild(button);
+            });
+            messageElement.appendChild(buttonContainer);
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script> 
+
+    <script>
+        // Objeto que almacena cadenas de texto en diferentes idiomas (similar a ejemplos anteriores)
+
+        // Función para cambiar el idioma del chatbot
+        function changeLanguage(language) {
+            const languageData = languages[language];
+            if (languageData) {
+                document.getElementById('chat-title').textContent = languageData.title;
+                // Actualiza otras cadenas de texto aquí
+            }
+        }
+
+        // Cambiar el idioma según la selección del usuario
+        document.getElementById('language-select').addEventListener('change', function() {
+            const selectedLanguage = this.value;
+            changeLanguage(selectedLanguage);
+        });
+
+        // Inicialmente, establecer el idioma en español
+        changeLanguage('es');
+
+        // Resto del código del chatbot (similar a ejemplos anteriores)
+    </script>
+</body>
+</html>
